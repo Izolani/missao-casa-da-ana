@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ff6b9d">
+<title>Missão Casa da Ana 🌟</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Comic Sans MS','Chalkboard SE','Baloo 2',system-ui,sans-serif;
+  background:linear-gradient(160deg,#ffe3ec 0%,#fff0d6 55%,#e3f4ff 100%);
+  color:#4a3b5c;
+  user-select:none;-webkit-user-select:none;
+  touch-action:manipulation;
+  overscroll-behavior:none;
+  display:flex;justify-content:center;
+  min-height:100vh;min-height:100dvh;
+}
+#app{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;padding:16px 16px 30px;position:relative}
+
+/* header */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.topbar .back{background:#fff;border:3px solid #ffd43b;color:#4a3b5c;font-size:20px;width:48px;height:48px;border-radius:50%;cursor:pointer;box-shadow:0 3px 0 #e0b800}
+.topbar .mute{background:#fff;border:3px solid #b197fc;color:#4a3b5c;font-size:20px;width:48px;height:48px;border-radius:50%;cursor:pointer;box-shadow:0 3px 0 #9c7ff0}
+
+/* home */
+.home-title{font-size:34px;text-align:center;margin:8px 0 2px;color:#ff6b9d;text-shadow:0 2px 0 #fff}
+.home-sub{text-align:center;font-size:16px;color:#8a7a9e;margin-bottom:14px}
+.avatar{width:110px;height:110px;margin:6px auto 10px;border-radius:50%;background:#fff;border:5px solid #ffd43b;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 6px 0 #e0b800}
+.stars-big{text-align:center;font-size:26px;font-weight:bold;margin:4px 0}
+.level-badge{text-align:center;background:#fff;border:3px solid #b197fc;border-radius:20px;padding:10px 14px;margin:10px 0;box-shadow:0 4px 0 #9c7ff0}
+.level-badge .lvl-name{font-size:20px;font-weight:bold}
+.progress{height:16px;background:#f1e8ff;border-radius:10px;margin:8px 0 4px;overflow:hidden;border:2px solid #e3d5ff}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ffd43b,#ff6b9d);border-radius:10px;transition:width .4s}
+.level-badge .hint{font-size:13px;color:#8a7a9e}
+.home-btns{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.big-btn{background:#ff6b9d;color:#fff;border:none;border-radius:22px;font-size:22px;font-weight:bold;padding:16px;cursor:pointer;box-shadow:0 5px 0 #d94f7f;font-family:inherit}
+.big-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #d94f7f}
+.big-btn.alt{background:#4dabf7;box-shadow:0 5px 0 #3387d1}
+.big-btn.green{background:#69db7c;box-shadow:0 5px 0 #4cbb60}
+.big-btn.purple{background:#b197fc;box-shadow:0 5px 0 #8f74e0}
+.big-btn.yellow{background:#ffd43b;color:#7a5c00;box-shadow:0 5px 0 #e0b800}
+.link-btn{background:none;border:none;color:#8a7a9e;font-size:15px;text-decoration:underline;cursor:pointer;font-family:inherit;margin-top:6px}
+
+/* categories */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.cat-card{background:#fff;border-radius:22px;padding:16px 10px;text-align:center;cursor:pointer;border:3px solid transparent;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.cat-card .cat-emoji{font-size:44px}
+.cat-card .cat-name{font-size:19px;font-weight:bold;margin-top:4px}
+.cat-card .cat-stars{font-size:14px;color:#8a7a9e;margin-top:2px}
+
+/* game list */
+.game-list{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.game-card{background:#fff;border-radius:20px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.game-card .g-emoji{font-size:38px}
+.game-card .g-info{flex:1}
+.game-card .g-title{font-size:18px;font-weight:bold}
+.game-card .g-desc{font-size:13px;color:#8a7a9e}
+.game-card .g-stars{font-size:16px}
+
+/* game screen */
+.game-title{text-align:center;font-size:24px;font-weight:bold;margin:4px 0 2px}
+.game-desc{text-align:center;font-size:15px;color:#8a7a9e;margin-bottom:10px}
+.game-area{background:#fff;border-radius:24px;padding:18px;min-height:340px;box-shadow:0 5px 0 rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative}
+.bar{width:80%;height:18px;background:#f1e8ff;border-radius:10px;overflow:hidden;border:2px solid #e3d5ff}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,#ffd43b,#ff6b9d);border-radius:10px;transition:width .15s}
+.bowl{font-size:90px;transition:transform .15s}
+.bowl.stir{transform:rotate(-25deg) scale(1.1)}
+.cake{font-size:90px}
+.hidden{display:none!important}
+.grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.leaf{position:relative;font-size:64px;background:#f1fbe9;border-radius:16px;padding:10px;border:2px solid #c8f0b0}
+.spot{position:absolute;width:16px;height:16px;border-radius:50%;background:#8d6e4b;border:none;cursor:pointer;padding:0}
+.cloth-card{font-size:70px;width:150px;height:150px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:3px solid #ddd;transition:transform .2s}
+.cloth-card.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.baskets{display:flex;gap:12px;width:100%}
+.basket-btn{flex:1;font-size:18px;font-weight:bold;padding:14px 6px;border-radius:18px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.basket-btn:active{transform:translateY(3px);box-shadow:none}
+.sock{font-size:44px;background:#fff;border:3px solid #e3d5ff;border-radius:14px;padding:8px 10px;cursor:pointer;transition:transform .15s}
+.sock.selected{transform:scale(1.15);border-color:#ff6b9d}
+.sock.paired{opacity:.35;pointer-events:none}
+.dirt{width:34px;height:34px;border-radius:50%;background:#8d6e4b;border:none;cursor:pointer;position:relative}
+.plant{font-size:56px;cursor:pointer;transition:transform .2s}
+.toy{font-size:52px;cursor:pointer;transition:transform .3s}
+.toy.fly{transform:scale(.2);opacity:0}
+.toybox{font-size:70px;transition:transform .2s}
+.step-card{background:#f8f4ff;border:3px dashed #b197fc;border-radius:18px;padding:14px 18px;text-align:center;font-size:17px;font-weight:bold;cursor:pointer;min-width:220px}
+.step-card.done{background:#e9fbef;border-color:#69db7c;color:#2b8a3e}
+.step-card .step-emoji{font-size:40px;display:block}
+
+/* result overlay */
+.overlay{position:fixed;inset:0;background:rgba(74,59,92,.55);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.result-card{background:#fff;border-radius:28px;padding:24px;text-align:center;max-width:380px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.25);animation:pop .3s}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.result-emoji{font-size:70px}
+.result-stars{font-size:44px;margin:8px 0}
+.result-msg{font-size:19px;font-weight:bold;margin-bottom:4px}
+.result-sub{font-size:15px;color:#8a7a9e;margin-bottom:14px}
+.prize-card{background:linear-gradient(135deg,#fff3bf,#ffe3ec);border:3px solid #ffd43b;border-radius:18px;padding:12px;margin:10px 0;font-size:16px;font-weight:bold}
+.result-btns{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+
+/* prizes */
+.prize-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.prize-item{background:#fff;border-radius:18px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.prize-item.locked{opacity:.55}
+.prize-item .p-emoji{font-size:34px}
+.prize-item .p-name{font-size:17px;font-weight:bold}
+.prize-item .p-desc{font-size:13px;color:#8a7a9e}
+
+/* confetti */
+.confetti{position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;z-index:999;animation:fall 2.2s ease-in forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.7}}
+
+.screen-title{font-size:26px;font-weight:bold;text-align:center;margin:6px 0 2px}
+.screen-sub{text-align:center;font-size:15px;color:#8a7a9e;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===== util ===== */
+const el = (tag, cls, html) => { const e = document.createElement(tag); if(cls) e.className = cls; if(html !== undefined) e.innerHTML = html; return e; };
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+
+/* ===== sound ===== */
+let beepCtx = null, muted = localStorage.getItem('ana_muted') === '1';
+function beep(freq, dur=0.08, type='sine', vol=0.15, when=0){
+  if(muted) return;
+  try{
+    beepCtx = beepCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = beepCtx.createOscillator(), g = beepCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    const t = beepCtx.currentTime + when;
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(beepCtx.destination);
+    o.start(t); o.stop(t + dur);
+  }catch(e){}
+}
+const sndTap = () => beep(600, .05);
+const sndOk = () => { beep(523,.1); beep(659,.1,undefined,undefined,.08); beep(784,.18,undefined,undefined,.16); };
+const sndBad = () => { beep(220,.15,'sawtooth',.06); beep(180,.2,'sawtooth',.06,.1); };
+
+/* ===== confetti ===== */
+function confetti(){
+  const colors = ['#ff6b6b','#ffd43b','#69db7c','#4dabf7','#b197fc','#f783ac'];
+  for(let i=0;i<40;i++){
+    const c = el('div','confetti');
+    c.style.left = Math.random()*100 + '%';
+    c.style.background = colors[i%colors.length];
+    c.style.animationDelay = (Math.random()*.4)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 2600);
+  }
+}
+
+/* ===== state ===== */
+const KEY = 'ana_casa_game';
+let state = { stars:0, best:{}, plays:0, unlocked:[] };
+try{ state = Object.assign(state, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+const LEVELS = [
+  { min:0,  name:'Aprendiz da Casa', emoji:'🐣' },
+  { min:10, name:'Ajudante da Casa', emoji:'🐥' },
+  { min:25, name:'Mestre da Casa',   emoji:'🦸‍♀️' },
+  { min:50, name:'Super-Helper',     emoji:'👑' },
+];
+function levelOf(stars){
+  let lvl = LEVELS[0];
+  for(const l of LEVELS) if(stars >= l.min) lvl = l;
+  return lvl;
+}
+const PRIZES = [
+  { at:10, emoji:'🎬', name:'Vale-Filme', desc:'Escolher o filme da noite!' },
+  { at:25, emoji:'🍿', name:'Vale-Lanche', desc:'Escolher um lanche especial!' },
+  { at:50, emoji:'⏰', name:'Vale-Tempo', desc:'15 minutos extras de jogo!' },
+  { at:80, emoji:'🎉', name:'Vale-Festa', desc:'Uma noite da Ana com o lanche favorito!' },
+];
+
+const CATEGORIES = [
+  { id:'cozinhar', name:'Cozinhar', emoji:'🍳', color:'#ffa94d', games:['massa','alface'] },
+  { id:'lavar',    name:'Lavar',    emoji:'🧺', color:'#4dabf7', games:['separar','meias'] },
+  { id:'limpar',   name:'Limpar',   emoji:'🧹', color:'#69db7c', games:['varrer','plantas'] },
+  { id:'organizar',name:'Organizar',emoji:'🧸', color:'#b197fc', games:['brinquedos','cama'] },
+];
+const GAMES = {
+  massa:      { title:'Misturar a Massa', emoji:'🥣', cat:'cozinhar', desc:'Toque em "Mexer!" até a massa ficar pronta!' },
+  alface:     { title:'Lavar a Alface',   emoji:'🥬', cat:'cozinhar', desc:'Toque nas sujeirinhas para lavar todas as folhas!' },
+  separar:    { title:'Separar as Roupas',emoji:'👕', cat:'lavar',    desc:'Toque no cesto certo para cada roupa!' },
+  meias:      { title:'Dobrar as Meias',  emoji:'🧦', cat:'lavar',    desc:'Encontre os pares de meias iguais!' },
+  varrer:     { title:'Varrer a Sala',    emoji:'🧹', cat:'limpar',   desc:'Varra toda a sujeira do chão!' },
+  plantas:    { title:'Regar as Plantas', emoji:'🪴', cat:'limpar',   desc:'Dê água para todas as plantinhas!' },
+  brinquedos: { title:'Guardar os Brinquedos', emoji:'🧸', cat:'organizar', desc:'Coloque todos os brinquedos na caixa!' },
+  cama:       { title:'Arrumar a Cama',   emoji:'🛏️', cat:'organizar', desc:'Deixe a cama linda e arrumada!' },
+};
+
+/* ===== router ===== */
+let screen = 'home', currentGame = null, currentCat = 'cozinhar';
+const app = $('app');
+function $(id){ return document.getElementById(id); }
+function starsOf(id){ return state.best[id] || 0; }
+
+function render(){
+  app.innerHTML = '';
+  if(screen === 'home') renderHome();
+  else if(screen === 'cats') renderCats();
+  else if(screen === 'games') renderGames();
+  else if(screen === 'game') renderGameScreen();
+  else if(screen === 'prizes') renderPrizes();
+}
+
+function topbar(backTo){
+  const bar = el('div','topbar');
+  const back = el('button','back','←');
+  back.onclick = () => { sndTap(); screen = backTo; render(); };
+  const mute = el('button','mute', muted ? '🔇' : '🔊');
+  mute.onclick = () => { muted = !muted; localStorage.setItem('ana_muted', muted?'1':'0'); mute.textContent = muted?'🔇':'🔊'; };
+  bar.append(back, mute);
+  return bar;
+}
+
+/* ===== home ===== */
+function renderHome(){
+  const lvl = levelOf(state.stars);
+  const next = LEVELS.find(l => l.min > state.stars);
+  const pct = next ? Math.min(100, Math.round((state.stars - lvl.min) / (next.min - lvl.min) * 100)) : 100;
+
+  const title = el('div','home-title','🏠 Missão Casa da Ana');
+  const sub = el('div','home-sub','A super-ajudante da casa é você, Ana!');
+  const avatar = el('div','avatar','👧');
+  const stars = el('div','stars-big','⭐ ' + state.stars + ' estrelas');
+  const badge = el('div','level-badge');
+  badge.innerHTML = `<div class="lvl-name">${lvl.emoji} ${lvl.name}</div>`;
+  const prog = el('div','progress'); const fill = el('div','progress-fill'); fill.style.width = pct+'%'; prog.appendChild(fill);
+  const hint = el('div','hint', next ? `Faltam ${next.min - state.stars} ⭐ para virar ${next.name}!` : 'Você já é a maior ajudante da casa! 🏆');
+  badge.append(prog, hint);
+
+  const play = el('button','big-btn','▶️ Jogar');
+  play.onclick = () => { sndTap(); screen='cats'; render(); };
+  const prizes = el('button','big-btn alt','🎁 Meus Prêmios');
+  prizes.onclick = () => { sndTap(); screen='prizes'; render(); };
+  const reset = el('button','link-btn','Recomeçar do zero');
+  reset.onclick = () => { if(confirm('Tem certeza que quer apagar tudo e recomeçar?')){ state = {stars:0,best:{},plays:0,unlocked:[]}; save(); render(); } };
+
+  const btns = el('div','home-btns'); btns.append(play, prizes, reset);
+  app.append(title, sub, avatar, stars, badge, btns);
+}
+
+/* ===== categories ===== */
+function renderCats(){
+  app.append(topbar('home'));
+  app.append(el('div','screen-title','Escolha a missão'));
+  app.append(el('div','screen-sub','Toque em uma categoria para começar'));
+  const grid = el('div','cat-grid');
+  for(const c of CATEGORIES){
+    const card = el('div','cat-card');
+    card.style.borderColor = c.color;
+    let total = 0, got = 0;
+    for(const g of c.games){ total += 3; got += starsOf(g); }
+    card.innerHTML = `<div class="cat-emoji">${c.emoji}</div><div class="cat-name">${c.name}</div><div class="cat-stars">⭐ ${got}/${total}</div>`;
+    card.onclick = () => { sndTap(); currentCat = c.id; screen='games'; render(); };
+    grid.appendChild(card);
+  }
+  app.appendChild(grid);
+}
+
+/* ===== games list ===== */
+function renderGames(){
+  const cat = CATEGORIES.find(c => c.id === currentCat);
+  app.append(topbar('cats'));
+  app.append(el('div','screen-title', cat.emoji + ' ' + cat.name));
+  app.append(el('div','screen-sub','Escolha um jogo para brincar'));
+  const list = el('div','game-list');
+  for(const gid of cat.games){
+    const g = GAMES[gid];
+    const card = el('div','game-card');
+    const best = starsOf(gid);
+    card.innerHTML = `<div class="g-emoji">${g.emoji}</div><div class="g-info"><div class="g-title">${g.title}</div><div class="g-desc">${g.desc}</div></div><div class="g-stars">${best ? '⭐'.repeat(best) : '—'}</div>`;
+    card.onclick = () => { sndTap(); currentGame = gid; screen='game'; render(); };
+    list.appendChild(card);
+  }
+  app.appendChild(list);
+}
+
+/* ===== game screen ===== */
+function renderGameScreen(){
+  const g = GAMES[currentGame];
+  app.append(topbar('games'));
+  app.append(el('div','game-title', g.emoji + ' ' + g.title));
+  app.append(el('div','game-desc', g.desc));
+  const area = el('div','game-area');
+  app.appendChild(area);
+  const start = performance.now();
+  GAME_PLAY[currentGame](area, start);
+}
+
+function starsByTime(start, t3, t2){
+  const s = (performance.now() - start) / 1000;
+  return s <= t3 ? 3 : s <= t2 ? 2 : 1;
+}
+
+function finishGame(id, stars){
+  const g = GAMES[id];
+  const oldLvl = levelOf(state.stars);
+  state.stars += stars;
+  if(!state.best[id] || stars > state.best[id]) state.best[id] = stars;
+  state.plays++;
+  const newLvl = levelOf(state.stars);
+  let newPrize = null;
+  for(let i=0;i<PRIZES.length;i++){
+    const p = PRIZES[i];
+    if(state.stars >= p.at && !state.unlocked.includes(i)){ state.unlocked.push(i); newPrize = p; }
+  }
+  save();
+  sndOk(); confetti();
+  showResult(g, stars, oldLvl.name !== newLvl.name, newLvl, newPrize);
+}
+
+function showResult(g, stars, leveled, newLvl, newPrize){
+  const ov = el('div','overlay');
+  const card = el('div','result-card');
+  card.innerHTML = `<div class="result-emoji">${g.emoji}</div><div class="result-stars">${'⭐'.repeat(stars)}</div><div class="result-msg">Missão cumprida!</div><div class="result-sub">${g.title}</div>`;
+  if(leveled) card.innerHTML += `<div class="prize-card">🎉 Você subiu de nível! Agora você é ${newLvl.emoji} ${newLvl.name}!</div>`;
+  if(newPrize) card.innerHTML += `<div class="prize-card">🎁 Prêmio desbloqueado: ${newPrize.emoji} ${newPrize.name} — ${newPrize.desc}</div>`;
+  card.innerHTML += `<div class="result-sub">Total: ⭐ ${state.stars}</div>`;
+  const btns = el('div','result-btns');
+  const again = el('button','big-btn','🔁 Jogar de novo');
+  again.onclick = () => { sndTap(); ov.remove(); screen='game'; render(); };
+  const back = el('button','big-btn alt','🏠 Voltar para as missões');
+  back.onclick = () => { sndTap(); ov.remove(); screen='games'; render(); };
+  btns.append(again, back);
+  card.appendChild(btns);
+  ov.appendChild(card);
+  ov.onclick = (e) => { if(e.target === ov){ ov.remove(); screen='games'; render(); } };
+  app.appendChild(ov);
+}
+
+/* ===== mini-games ===== */
+const GAME_PLAY = {
+  massa(area, start){
+    let taps = 0; const total = 10;
+    const bowl = el('div','bowl','🥣');
+    const cake = el('div','cake hidden','🍰');
+    const bar = el('div','bar'); const fill = el('div','bar-fill'); bar.appendChild(fill);
+    const btn = el('button','big-btn','🥄 Mexer!');
+    btn.onclick = () => {
+      taps++; sndTap();
+      bowl.classList.remove('stir'); void bowl.offsetWidth; bowl.classList.add('stir');
+      fill.style.width = (taps/total*100) + '%';
+      if(taps >= total){
+        bowl.classList.add('hidden'); cake.classList.remove('hidden');
+        finishGame('massa', starsByTime(start, 12, 20));
+      }
+    };
+    area.append(bowl, cake, bar, btn);
+  },
+
+  alface(area, start){
+    let spots = 10, taps = 0;
+    const grid = el('div','grid');
+    for(let i=0;i<5;i++){
+      const leaf = el('div','leaf','🥬');
+      const p1 = el('button','spot'), p2 = el('button','spot');
+      p1.style.left = '20%'; p1.style.top = '30%';
+      p2.style.left = '55%'; p2.style.top = '55%';
+      const clean = () => { taps++; sndTap(); };
+      p1.onclick = () => { clean(); p1.remove(); spots--; check(); };
+      p2.onclick = () => { clean(); p2.remove(); spots--; check(); };
+      leaf.append(p1, p2);
+      grid.appendChild(leaf);
+    }
+    function check(){ if(spots === 0) finishGame('alface', taps <= 10 ? 3 : taps <= 12 ? 2 : 1); }
+    area.appendChild(grid);
+  },
+
+  separar(area, start){
+    const items = shuffle([
+      {emoji:'👕', color:'#ff6b6b', white:false},
+      {emoji:'👗', color:'#f783ac', white:false},
+      {emoji:'🩳', color:'#4dabf7', white:false},
+      {emoji:'🧦', color:'#69db7c', white:false},
+      {emoji:'👕', color:'#f8f9fa', white:true},
+      {emoji:'👖', color:'#f8f9fa', white:true},
+    ]);
+    let idx = 0, errors = 0;
+    const card = el('div','cloth-card');
+    const baskets = el('div','baskets');
+    const bCol = el('button','basket-btn','🌈 Coloridas'); bCol.style.background = '#ffd43b'; bCol.style.color = '#7a5c00';
+    const bWhi = el('button','basket-btn','⬜ Brancas'); bWhi.style.background = '#f1f3f5'; bWhi.style.color = '#495057';
+    baskets.append(bCol, bWhi);
+    function show(){
+      if(idx >= items.length){ finishGame('separar', errors === 0 ? 3 : errors <= 2 ? 2 : 1); return; }
+      const it = items[idx];
+      card.style.background = it.color;
+      card.style.borderColor = it.white ? '#adb5bd' : '#ddd';
+      card.innerHTML = it.emoji;
+    }
+    function answer(white){
+      const it = items[idx];
+      if(it.white === white){
+        sndOk(); idx++; show();
+      } else {
+        errors++; sndBad();
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+      }
+    }
+    bCol.onclick = () => answer(false);
+    bWhi.onclick = () => answer(true);
+    show();
+    area.append(card, baskets);
+  },
+
+  meias(area, start){
+    const colors = ['#ff6b6b','#4dabf7','#69db7c','#ffd43b'];
+    const socks = shuffle(colors.flatMap(c => [c, c]));
+    let taps = 0, pairs = 0, sel = null;
+    const grid = el('div','grid');
+    const sockEls = socks.map(c => {
+      const s = el('button','sock','🧦');
+      s.style.borderColor = c;
+      s.onclick = () => {
+        taps++;
+        if(sel === null){ sel = s; s.classList.add('selected'); sndTap(); return; }
+        if(sel === s){ sel.classList.remove('selected'); sel = null; return; }
+        if(sel.style.borderColor === s.style.borderColor){
+          sel.classList.remove('selected'); sel.classList.add('paired'); s.classList.add('paired');
+          sel = null; pairs++; sndOk();
+          if(pairs === 4) finishGame('meias', taps <= 8 ? 3 : taps <= 10 ? 2 : 1);
+        } else {
+          const a = sel; a.classList.remove('selected'); sel = null;
+          a.classList.add('shake'); s.classList.add('shake');
+          setTimeout(()=>{ a.classList.remove('shake'); s.classList.remove('shake'); }, 450);
+          sndBad();
+        }
+      };
+      return s;
+    });
+    sockEls.forEach(s => grid.appendChild(s));
+    area.appendChild(grid);
+  },
+
+  varrer(area, start){
+    let left = 6;
+    const floor = el('div','grid');
+    for(let i=0;i<6;i++){
+      const d = el('button','dirt');
+      d.style.width = (26 + Math.random()*14) + 'px';
+      d.style.height = d.style.width;
+      d.onclick = () => {
+        sndTap(); d.style.background = 'transparent';
+        d.innerHTML = '✨';
+        left--;
+        if(left === 0) finishGame('varrer', starsByTime(start, 15, 25));
+      };
+      floor.appendChild(d);
+    }
+    area.append(el('div','','🧹 Varra com o dedo!'), floor);
+  },
+
+  plantas(area, start){
+    let left = 5;
+    const grid = el('div','grid');
+    for(let i=0;i<5;i++){
+      const p = el('button','plant','🪴');
+      p.style.background = '#f1fbe9'; p.style.border = '2px solid #c8f0b0'; p.style.borderRadius = '16px'; p.style.padding = '10px';
+      p.onclick = () => {
+        sndOk();
+        p.innerHTML = '💧';
+        setTimeout(()=>{ p.innerHTML = '🌿'; p.style.background = '#e3fbe9'; }, 350);
+        p.style.pointerEvents = 'none';
+        left--;
+        if(left === 0) finishGame('plantas', starsByTime(start, 12, 20));
+      };
+      grid.appendChild(p);
+    }
+    area.append(el('div','','💧 Toque para regar cada plantinha!'), grid);
+  },
+
+  brinquedos(area, start){
+    const toys = shuffle(['🧸','🚗','🪁','🎲','🦄','⚽']);
+    let left = toys.length;
+    const box = el('div','toybox','🧺');
+    const grid = el('div','grid');
+    for(const t of toys){
+      const toy = el('button','toy', t);
+      toy.style.background = '#fff7e6'; toy.style.border = '2px solid #ffd43b'; toy.style.borderRadius = '16px'; toy.style.padding = '8px';
+      toy.onclick = () => {
+        sndOk(); toy.classList.add('fly');
+        box.style.transform = 'scale(1.15)'; setTimeout(()=>box.style.transform='', 200);
+        left--;
+        if(left === 0) finishGame('brinquedos', starsByTime(start, 12, 20));
+      };
+      grid.appendChild(toy);
+    }
+    area.append(box, grid);
+  },
+
+  cama(area, start){
+    let step = 0;
+    const steps = [
+      {emoji:'🛌', label:'Almofada'},
+      {emoji:'🛏️', label:'Cobertor'},
+      {emoji:'🧸', label:'Ursinho'},
+    ];
+    const card = el('div','step-card');
+    function show(){
+      if(step >= steps.length){ finishGame('cama', starsByTime(start, 15, 25)); return; }
+      card.innerHTML = `<span class="step-emoji">${steps[step].emoji}</span>Toque para arrumar: ${steps[step].label}`;
+    }
+    card.onclick = () => {
+      sndOk();
+      card.classList.add('done');
+      card.innerHTML = `<span class="step-emoji">✅</span>${steps[step].label} arrumada!`;
+      step++;
+      setTimeout(show, 700);
+    };
+    show();
+    area.append(el('div','','🛏️ Hora de deixar a cama linda!'), card);
+  },
+};
+
+/* ===== prizes ===== */
+function renderPrizes(){
+  app.append(topbar('home'));
+  app.append(el('div','screen-title','🎁 Meus Prêmios'));
+  app.append(el('div','screen-sub','Complete missões para desbloquear'));
+  const list = el('div','prize-list');
+  for(let i=0;i<PRIZES.length;i++){
+    const p = PRIZES[i];
+    const unlocked = state.unlocked.includes(i);
+    const item = el('div','prize-item' + (unlocked ? '' : ' locked'));
+    item.innerHTML = `<div class="p-emoji">${unlocked ? p.emoji : '🔒'}</div><div><div class="p-name">${p.name} <span style="font-size:13px;color:#8a7a9e">(${p.at} ⭐)</span></div><div class="p-desc">${unlocked ? p.desc : 'Desbloqueia com ' + p.at + ' estrelas'}</div></div>`;
+    list.appendChild(item);
+  }
+  app.appendChild(list);
+}
+
+render();
+</script>
+</body>
+</html>
